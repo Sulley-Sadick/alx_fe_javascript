@@ -32,15 +32,33 @@ const showRandomQuote = function (quotes = ["random"]) {
   // get selectedQuote by using the randomIndex
   const selectedQuote = quotes[randomIndex];
 
-  // generate markup
-  const markup = `
-    <div class="quote--list" data="${randomIndex}">
-    <h4>${selectedQuote.category}:</h4>
-      <p>${selectedQuote.text}</p>
-    </div>
-    `;
+  // create quote div to hold all qoutes
+  const quoteDiv = document.createElement("div");
 
-  displayQuotesContainer.insertAdjacentHTML("beforeend", markup);
+  // set it dataset attribute to randomIndex
+  quoteDiv.dataset.index = randomIndex;
+
+  // add class on attribute on quoteDiv
+  quoteDiv.classList.add("quote--list");
+
+  // create h3 element
+  const h3 = document.createElement("h3");
+
+  // set textContent of h3 to selectedQuote.category
+  h3.textContent = selectedQuote.category;
+
+  // create h3 element
+  const p = document.createElement("p");
+
+  // set textContent of p to selectedQuote.text
+  p.textContent = selectedQuote.text;
+
+  // append both h3 and p using appenChild because there is the requirement
+  quoteDiv.appendChild(h3);
+  quoteDiv.appendChild(p);
+
+  // append quoteDiv to quotesContainer
+  displayQuotesContainer.append(quoteDiv);
 };
 
 // add click eventListener to the showQuote button
@@ -49,7 +67,7 @@ showNewQuoteButton.addEventListener("click", function () {
 });
 
 // add quote
-const addQuote = function (newQuote = ["createAddQuoteForm"]) {
+const addQuote = function (quote = ["createAddQuoteForm"]) {
   // get inputFields
   const quoteText = quoteInput.value.trim();
   const categoryText = categoryInput.value.trim();
@@ -68,6 +86,8 @@ const addQuote = function (newQuote = ["createAddQuoteForm"]) {
 
   // push object to quoteArr
   quoteArr.push(object);
+
+  console.log(quoteArr.slice(-1));
 
   // show random quote
   showRandomQuote(quoteArr);
