@@ -22,7 +22,7 @@ const quoteArr = [
   },
 ];
 
-const showRandomQuote = function (quotes) {
+const showRandomQuote = function (quotes = ["random"]) {
   // set innerHTML  of qoutesContainer = ''
   displayQuotesContainer.innerHTML = "";
 
