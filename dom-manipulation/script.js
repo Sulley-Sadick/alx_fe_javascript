@@ -22,7 +22,7 @@ const quoteArr = [
   },
 ];
 
-const displayRandomQuote = function (quotes) {
+const showRandomQuote = function (quotes) {
   // set innerHTML  of qoutesContainer = ''
   displayQuotesContainer.innerHTML = "";
 
@@ -41,7 +41,7 @@ const displayRandomQuote = function (quotes) {
 
 // add click eventListener to the showQuote button
 showNewQuoteButton.addEventListener("click", function () {
-  displayRandomQuote(quoteArr);
+  showRandomQuote(quoteArr);
 });
 
 // add quote
@@ -56,7 +56,7 @@ const addQuote = function () {
 
   quoteArr.push(object);
 
-  displayRandomQuote(quoteArr);
+  showRandomQuote(quoteArr);
 
   // clear input fields
   quoteInput.value = categoryInput.value = "";
