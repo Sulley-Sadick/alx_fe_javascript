@@ -7,7 +7,8 @@ const showNewQuoteButton = document.getElementById("newQuote");
 const quoteInput = document.getElementById("newQuoteText");
 const categoryInput = document.getElementById("newQuoteCategory");
 
-const quoteArr = [
+// quoteArr holding text and category
+let quoteArr = [
   {
     text: "For humans to go somewhere, he must leave something behind",
     category: "Motivation",
@@ -22,9 +23,15 @@ const quoteArr = [
   },
 ];
 
+// load quoteArr from localStorage when page loads and convert it to object using the JSON.Parse
+quoteArr = JSON.parse(localStorage.getItem("quote")) || [];
+
 const showRandomQuote = function (quotes = ["random"]) {
   // set innerHTML  of qoutesContainer = ''
   displayQuotesContainer.innerHTML = "";
+
+  // quotes does not have any element within, return the showRandomQuote function
+  if (!quotes || (Array.isArray(quotes) && quotes.length === 0)) return;
 
   // get randomIndex
   const randomIndex = Math.floor(Math.random() * quotes.length);
@@ -38,7 +45,7 @@ const showRandomQuote = function (quotes = ["random"]) {
   // set it dataset attribute to randomIndex
   quoteDiv.dataset.index = randomIndex;
 
-  // add class on attribute on quoteDiv
+  // add class attribute on quoteDiv
   quoteDiv.classList.add("quote--list");
 
   // create h3 element
@@ -47,13 +54,13 @@ const showRandomQuote = function (quotes = ["random"]) {
   // set textContent of h3 to selectedQuote.category
   h3.textContent = selectedQuote.category;
 
-  // create h3 element
+  // create p element
   const p = document.createElement("p");
 
   // set textContent of p to selectedQuote.text
   p.textContent = selectedQuote.text;
 
-  // append both h3 and p using appenChild because there is the requirement
+  // append both h3 and p using appenChild because that is the requirement
   quoteDiv.appendChild(h3);
   quoteDiv.appendChild(p);
 
@@ -61,10 +68,13 @@ const showRandomQuote = function (quotes = ["random"]) {
   displayQuotesContainer.append(quoteDiv);
 };
 
-// add click eventListener to the showQuote button
+// add click eventListener to the showQuoteButton
 showNewQuoteButton.addEventListener("click", function () {
   showRandomQuote(quoteArr);
 });
+
+// call showRandomQuote and pass in quotesArr when the page loads
+showRandomQuote(quoteArr);
 
 // add quote
 const addQuote = function (quote = ["createAddQuoteForm"]) {
@@ -87,8 +97,12 @@ const addQuote = function (quote = ["createAddQuoteForm"]) {
   // push object to quoteArr
   quoteArr.push(object);
 
-  console.log(quoteArr.slice(-1));
-
   // show random quote
   showRandomQuote(quoteArr);
+
+  // store quoteArr in localStorage
+  localStorage.setItem("quote", JSON.stringify(quoteArr));
 };
+
+// storing  lastViewQuote in sessionStorage
+sessionStorage.setItem("lastView", JSON.stringify(quoteArr.slice(-1)));
