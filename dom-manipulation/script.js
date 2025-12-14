@@ -49,7 +49,7 @@ showNewQuoteButton.addEventListener("click", function () {
 });
 
 // add quote
-const addQuote = function () {
+const addQuote = function (newQuote = ["createAddQuoteForm"]) {
   // get inputFields
   const quoteText = quoteInput.value.trim();
   const categoryText = categoryInput.value.trim();
