@@ -3,26 +3,26 @@
 
 // selecting elements
 const displayQuotesContainer = document.getElementById("quoteDisplay");
-const showQuoteButton = document.getElementById("newQuote");
+const showNewQuoteButton = document.getElementById("newQuote");
 const quoteInput = document.getElementById("newQuoteText");
 const categoryInput = document.getElementById("newQuoteCategory");
 
 const quoteArr = [
   {
-    quote: "For humans to go somewhere, he must leave something behind",
+    text: "For humans to go somewhere, he must leave something behind",
     category: "Motivation",
   },
   {
-    quote: "Deep life is a good life",
+    text: "Deep life is a good life",
     category: "Concentration",
   },
   {
-    quote: "Failure cannot win over me when my determination to succeed is too strong",
+    text: "Failure cannot win over me when my determination to succeed is too strong",
     category: "Inspiration",
   },
 ];
 
-const showRandomQuote = function (quotes) {
+const displayRandomQuote = function (quotes) {
   // set innerHTML  of qoutesContainer = ''
   displayQuotesContainer.innerHTML = "";
 
@@ -40,8 +40,8 @@ const showRandomQuote = function (quotes) {
 };
 
 // add click eventListener to the showQuote button
-showQuoteButton.addEventListener("click", function () {
-  showRandomQuote(quoteArr);
+showNewQuoteButton.addEventListener("click", function () {
+  displayRandomQuote(quoteArr);
 });
 
 // add quote
@@ -50,15 +50,13 @@ const addQuote = function () {
   const categoryText = categoryInput.value.trim();
 
   const object = {
-    quote: quoteText,
+    text: quoteText,
     category: categoryText,
   };
 
   quoteArr.push(object);
 
-  showRandomQuote(quoteArr);
-
-  console.log(quoteArr);
+  displayRandomQuote(quoteArr);
 
   // clear input fields
   quoteInput.value = categoryInput.value = "";
