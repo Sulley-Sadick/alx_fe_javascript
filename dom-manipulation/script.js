@@ -14,7 +14,7 @@ const categoryFilter = document.getElementById("categoryFilter");
 const syncStatus = document.createElement("p");
 
 // constant variable
-const API_URL = "https://dummyjson.com/quotes/";
+const API_URL = "https://jsonplaceholder.typicode.com/posts";
 
 // quoteArr holding text and category
 let quoteArr = [
@@ -215,7 +215,7 @@ showRandomQuote(lastSelectedFilter);
 const fetchQuotesFromServer = async function () {
   try {
     // get response object when data is being fetched successfully and get it's resolved value using the await keyword
-    const response = await fetch(`${API_URL}/random/10`);
+    const response = await fetch(`${API_URL}`);
 
     // get resolved value using the await keyword
     const quotes = await response.json();
