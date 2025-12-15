@@ -212,7 +212,7 @@ const lastSelectedFilter = JSON.parse(localStorage.getItem("lastSelectedFilter")
 showRandomQuote(lastSelectedFilter);
 
 // fetch quote from server
-const fetchQuoteFromServer = async function () {
+const fetchQuotesFromServer = async function () {
   try {
     // get response object when data is being fetched successfully and get it's resolved value using the await keyword
     const response = await fetch(`${API_URL}/random/10`);
@@ -232,7 +232,7 @@ const fetchQuoteFromServer = async function () {
   }
 };
 
-fetchQuoteFromServer();
+fetchQuotesFromServer();
 
 // post quote to server
 const postQuoteToServer = async function (quote) {
@@ -251,8 +251,8 @@ const syncQuotes = async function (quotes) {
   // clear quotes before any push
   quotes = [];
 
-  // get the return value from fetchQuoteFromServer and store in serverQuotes
-  const serverQuotes = await fetchQuoteFromServer();
+  // get the return value from fetchQuotesFromServer and store in serverQuotes
+  const serverQuotes = await fetchQuotesFromServer();
 
   // loop over returnQuotes
   serverQuotes.forEach((serverQuote) => {
