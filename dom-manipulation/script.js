@@ -6,6 +6,7 @@ const displayQuotesContainer = document.getElementById("quoteDisplay");
 const showNewQuoteButton = document.getElementById("newQuote");
 const quoteInput = document.getElementById("newQuoteText");
 const categoryInput = document.getElementById("newQuoteCategory");
+const exportButton = document.querySelector(".export--btn");
 
 // quoteArr holding text and category
 let quoteArr = [
@@ -106,3 +107,54 @@ const addQuote = function (quote = ["createAddQuoteForm"]) {
 
 // storing  lastViewQuote in sessionStorage
 sessionStorage.setItem("lastView", JSON.stringify(quoteArr.slice(-1)));
+
+// export to JSON
+const exportToJsonFile = function () {
+  // get data from localStorage
+  const jsonString = localStorage.getItem("quote");
+
+  // convert to blob object
+  const blob = new Blob([jsonString], { type: "application/json" });
+
+  // create URL using URL.createObject URL
+  const url = URL.createObjectURL(blob);
+
+  // create anchor element
+  const a = document.createElement("a");
+
+  // set href = url
+  a.href = url;
+
+  // the desired file name
+  a.download = "data/json";
+
+  // this will trigger the download
+  a.click();
+
+  // clear up url after download starts
+  URL.revokeObjectURL(url);
+};
+
+// listen for click event on exportButton
+exportButton.addEventListener("click", exportToJsonFile);
+
+// import json file
+const importFromJsonFile = function (event) {
+  // create fileReader object
+  const fileReader = new FileReader();
+
+  // load the data when data is successfully retreived
+  fileReader.onload = function (event) {
+    // get the json result and convert to real object
+    const storedQuotes = JSON.parse(event.target.result);
+
+    // push to quoteArr
+    quoteArr.push(storedQuotes[0]);
+
+    // convert object to json string and store it in localStorage
+    localStorage.setItem("quote", JSON.stringify(quoteArr));
+  };
+
+  // read the file received as a text
+  fileReader.readAsText(event.target.files[0]);
+};
