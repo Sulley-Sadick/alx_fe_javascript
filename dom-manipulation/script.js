@@ -10,6 +10,11 @@ const addQuoteButton = document.getElementById("addQuote");
 const exportButton = document.getElementById("export--btn");
 const importInput = document.getElementById("importFile");
 const categoryFilter = document.getElementById("categoryFilter");
+// create p element
+const syncStatus = document.createElement("p");
+
+// constant variable
+const API_URL = "https://dummyjson.com/quotes/";
 
 // quoteArr holding text and category
 let quoteArr = [
@@ -103,6 +108,10 @@ const addQuote = function (quote = ["createAddQuoteForm"]) {
   // populate categories
   populateCategories(quoteArr);
 
+  saveQuotes();
+};
+
+const saveQuotes = function () {
   // store quoteArr in localStorage
   localStorage.setItem("quote", JSON.stringify(quoteArr));
 };
@@ -152,8 +161,8 @@ const importFromJsonFile = function (event) {
     // push to quoteArr
     quoteArr.push(storedQuotes[0]);
 
-    // convert object to json string and store it in localStorage
-    localStorage.setItem("quote", JSON.stringify(quoteArr));
+    // save quotes to localStorage
+    saveQuotes();
   };
 
   // read the file received as a text
@@ -202,8 +211,87 @@ const lastSelectedFilter = JSON.parse(localStorage.getItem("lastSelectedFilter")
 // show last filtered element as random quote
 showRandomQuote(lastSelectedFilter);
 
-// show last filtered element as a category on the dropdown menu
-// populateCategories(lastSelectedFilter);
+// fetch quote from server
+const fetchQuoteFromServer = async function () {
+  try {
+    // get response object when data is being fetched successfully and get it's resolved value using the await keyword
+    const response = await fetch(`${API_URL}/random/10`);
+
+    // get resolved value using the await keyword
+    const quotes = await response.json();
+
+    return quotes.slice(0, 5).map((quote) => {
+      return {
+        id: quote.id,
+        text: quote.quote,
+        category: "server",
+      };
+    });
+  } catch (err) {
+    console.error(`💥 ${err}`);
+  }
+};
+
+fetchQuoteFromServer();
+
+// post quote to server
+const postQuoteToServer = async function (quote) {
+  try {
+    const postedQuote = await fetch(API_URL, { method: "post", headers: { "Content-Type": "application/json" }, body: JSON.stringify(quote) });
+
+    const receivedQuote = await postedQuote.json();
+  } catch (err) {
+    console.error(`💥${err}`);
+  }
+};
+
+postQuoteToServer();
+
+const syncQuotes = async function (quotes) {
+  // clear quotes before any push
+  quotes = [];
+
+  // get the return value from fetchQuoteFromServer and store in serverQuotes
+  const serverQuotes = await fetchQuoteFromServer();
+
+  // loop over returnQuotes
+  serverQuotes.forEach((serverQuote) => {
+    // find a matching element that has the same index
+    const index = quotes.findIndex((qoute) => serverQuote.id === qoute.id);
+
+    let conflicts = 0;
+
+    // push serverQuote to quotes array if there is no matching element that has the same index
+    if (index === -1) {
+      quotes.push(serverQuote);
+    } else {
+      // change element at the particular index that we got.
+      quotes[index] = serverQuote;
+
+      conflicts++;
+    }
+  });
+
+  // save quotes to localStorage
+  saveQuotes();
+
+  // populate categories
+  populateCategories(quotes);
+
+  // filter quotes
+  filterQuotes();
+
+  // if conflict existed as in two element had the same id
+  syncStatus.textContent = conflicts ? "confilct resolved using server data" : "Quotes synced with server!";
+
+  // set time out
+  setTimeout(() => {
+    syncStatus.textContent = "";
+  }, 4000);
+};
+
+syncQuotes(quoteArr);
+setInterval(syncQuotes(quoteArr), 15000);
 
 //////////////////////////////// EVENTLISTENERS /////////////////////////////////
 
