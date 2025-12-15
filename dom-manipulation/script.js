@@ -237,7 +237,7 @@ fetchQuotesFromServer();
 // post quote to server
 const postQuoteToServer = async function (quote) {
   try {
-    const postedQuote = await fetch(API_URL, { method: "post", headers: { "Content-Type": "application/json" }, body: JSON.stringify(quote) });
+    const postedQuote = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(quote) });
 
     const receivedQuote = await postedQuote.json();
   } catch (err) {
