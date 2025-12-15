@@ -282,7 +282,7 @@ const syncQuotes = async function (quotes) {
   filterQuotes();
 
   // if conflict existed as in two element had the same id
-  syncStatus.textContent = conflicts ? "confilct resolved using server data" : "Quotes synced with server!";
+  syncStatus.textContent = conflicts ? alert("We have a conflict") : "Quotes synced with server!";
 
   // set time out
   setTimeout(() => {
