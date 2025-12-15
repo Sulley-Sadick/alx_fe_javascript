@@ -37,6 +37,16 @@ h1 {
   min-width: 0;
 }
 
+select {
+  margin-left: -4rem;
+  align-self: flex-start;
+  margin-bottom: 0.8rem;
+}
+
+select:focus {
+  outline: none;
+}
+
 button {
   background-color: #707070;
   color: white;
