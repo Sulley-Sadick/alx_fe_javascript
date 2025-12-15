@@ -187,13 +187,13 @@ const filterQuotes = function (event) {
   const selectedElement = event.target.value;
 
   // fliter element within the quotesArr with a category that matches the selectedElement
-  const filteredQuote = quoteArr.filter((quote) => quote.category === selectedElement);
+  const selectedCategory = quoteArr.filter((quote) => quote.category === selectedElement);
 
-  // show filteredQuote
-  showRandomQuote(filteredQuote);
+  // show selectedCategory
+  showRandomQuote(selectedCategory);
 
   // store last selected Element in the localStorage
-  localStorage.setItem("lastSelectedFilter", JSON.stringify(filteredQuote));
+  localStorage.setItem("lastSelectedFilter", JSON.stringify(selectedCategory));
 };
 
 // get last selectedFilter from localStorage
